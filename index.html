@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bingo Shop</title>
+  <style>
+    /* General Styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 20px;
+      color: #444;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .service-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .service-item {
+      background-size: cover;
+      background-position: center;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      width: 200px;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5); /* Black transparency with 50% opacity */
+      z-index: 1;
+    }
+
+    .service-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .service-item h3 {
+      margin: 0;
+      font-size: 18px;
+      color: #fff; /* White text for better contrast */
+      position: relative;
+      z-index: 2;
+    }
+
+    .service-item p {
+      margin: 10px 0 0;
+      font-size: 14px;
+      color: #ddd; /* Light gray text for better contrast */
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .service-item {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+    <h1>Bingo Shop</h1>
+  <div class="container">
+    <h1>HACKING</h1>
+    <div class="service-list">
+      <div class="service-item" style="background-image: url('https://www.hstoday.us/wp-content/uploads/2019/07/ransomware-3998798__340.jpg');" onclick="openTelegram('service1')">
+        <h3>Ransomware Deployment</h3>
+        <p>50 $</p>
+      </div>
+      <div class="service-item" style="background-image: url('https://surfshark.com/wp-content/uploads/2021/11/How_to_stop_DDoS_attacks_hero.png');" onclick="openTelegram('service2')">
+        <h3>DDoS Attack</h3>
+        <p>1 Day : 50$</p>
+        <p>1 Week : 250$</p>
+        <p>1 Month : 500$</p>
+      </div>
+      <div class="service-item" style="background-image: url('https://www.wizlynxgroup.com/news/wp-content/uploads/2020/08/test.jpg');" onclick="openTelegram('service3')">
+        <h3>Credential Stuffing</h3>
+        <p>100 $</p>
+      </div>
+      <div class="service-item" style="background-image: url('https://securityintelligence.com/wp-content/uploads/2019/10/si-credentialstuffing-feature.jpg');" onclick="openTelegram('service4')">
+        <h3>Data Breaches</h3>
+        <p>150 $</p>
+      </div>
+      <div class="service-item" style="background-image: url('https://cdn.prod.website-files.com/635e632477408d12d1811a64/64062c342857c332a08594fe_zerodaycover.jpeg');" onclick="openTelegram('service5')">
+        <h3>Zero-Day Exploits</h3>
+        <p>500 $</p>
+      </div>
+      <div class="service-item" style="background-image: url('https://images.ctfassets.net/0idwgenf7ije/69Dy9mUxabhXrgTCSSpfbX/168739d1e062a4bc38097939b3fb9235/Gemini-What_Is_Cryptojacking_.png?fm=webp&w=1024&q=100');" onclick="openTelegram('service6')">
+        <h3>Cryptojacking</h3>
+        <p>Person Target : 300$</p>
+      </div>
+      <div class="service-item" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT21dP26Xm2aCuKy0XaMFUO6gfaEaPj0J_yyQ&s');" onclick="openTelegram('service7')">
+        <h3>Malware Development</h3>
+        <p>Contact Admin</p>
+      </div>
+      <div class="service-item" style="background-image: url('https://nordvpn.com/wp-content/uploads/blog-featured-PayPal-scams-1.svg');" onclick="openTelegram('service8')">
+        <h3>Carding & Financial Fraud</h3>
+        <p>Min : 150$</p>
+        <p>Max : 1500$</p>
+      </div>
+      </div>
+     
+    </div>
+
+    <h1>SPAMMING</h1>
+    <div class="service-list">
+      <div class="service-item" style="background-image: url('https://www.dotmagazine.online/_Resources/Persistent/2/a/f/5/2af5fd67deed94f2a18542cef08a967d91e33eca/iStock-532171892%20Spam-1213x682-720x405.jpg');" onclick="openTelegram('service1')">
+        <h3>Full setup BingoSetup(private sender , scampage and Private list)</h3>
+        <p>350 $</p>
+      </div>
+      <div class="service-item" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-nehl58Hg0IHES6XdY15GkN4R6r8pThgtrw&s');" onclick="openTelegram('service2')">
+        <h3>Email List from Hacked Website</h3>
+        <p>Contact Admin</p>
+      </div>
+      <div class="service-item" style="background-image: url('https://seeklogo.com/images/H/hosting-company-custom-logo-4D6D709D29-seeklogo.com.png');" onclick="openTelegram('service3')">
+        <h3>Hosting Page (Link 1 year/month)</h3>
+        <p>1 Month : 50 $</p>
+        <p>1 Year : 200$ </p>
+      </div>
+      <div class="service-item" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCvSjiDVp-Fd_KM1iTxAqlMiGNl3pttAvWQg&s');" onclick="openTelegram('service4')">
+        <h3>SMTPS Method</h3>
+        <p>300 $</p>
+      </div>
+      <div class="service-item" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqNCg-MLd14x9hkJsxKqFDiWKK46ELe4LRgA&s');" onclick="openTelegram('service5')">
+        <h3>Create Private Page undetected</h3>
+        <p>Contact Admin</p>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Replace these with your actual bot token and chat ID
+    const BOT_TOKEN = 'YOUR_BOT_TOKEN'; // Example: '123456789:ABCdefGhIJKlmNoPQRstuVWXyz'
+    const CHAT_ID = 'YOUR_CHAT_ID';   // Example: '123456789'
+
+    // Function to fetch IP and country information
+    async function fetchVisitorInfo() {
+      try {
+        // Fetch IP and country using ipinfo.io
+        const response = await fetch('https://ipinfo.io/json?token=f4e0f8d6b6c453'); // Replace YOUR_IPINFO_TOKEN with your token
+        const data = await response.json();
+        const ip = data.ip;
+        const country = data.country;
+
+        // Send the data to Telegram
+        await sendToTelegram(`New Visitor:\nIP: ${ip}\nCountry: ${country}`);
+      } catch (error) {
+        console.error('Error fetching or sending visitor info:', error);
+      }
+    }
+
+    // Function to send data to Telegram
+    async function sendToTelegram(message) {
+      const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+      const params = {
+        chat_id: CHAT_ID,
+        text: message,
+      };
+
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(params),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to send message to Telegram');
+        }
+
+        console.log('Message sent to Telegram successfully');
+      } catch (error) {
+        console.error('Error sending message to Telegram:', error);
+      }
+    }
+
+    // Fetch and send visitor info when the page loads
+    fetchVisitorInfo();
+  </script>
+  <script>
+    // Function to open Telegram bot
+    function openTelegram(serviceName) {
+      const telegramBotURL = `https://t.me/YourBotName`; // Replace with your Telegram bot link
+      window.open(telegramBotURL, '_blank');
+    }
+  </script>
+</body>
+</html>
