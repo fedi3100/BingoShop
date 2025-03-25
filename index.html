@@ -85,11 +85,50 @@
         width: 100%;
       }
     }
+    #logo{
+        width: 400px;
+        margin-top: 20px;
+        color: #444;
+        position: relative;
+        left :730px;
+        
+    }
   </style>
 </head>
 <body>
+    <script>
+        // Disable Right-Click
+document.addEventListener('contextmenu', function (event) {
+    event.preventDefault();
+});
 
-    <h1>Bingo Shop</h1>
+// Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+document.addEventListener('keydown', function (event) {
+    if (
+        event.keyCode == 123 || // F12
+        (event.ctrlKey && event.shiftKey && event.keyCode == 73) || // Ctrl+Shift+I
+        (event.ctrlKey && event.shiftKey && event.keyCode == 74) || // Ctrl+Shift+J
+        (event.ctrlKey && event.keyCode == 85) // Ctrl+U
+    ) {
+        event.preventDefault();
+    }
+});
+
+// Prevent DevTools Opening
+setInterval(function () {
+    let before = new Date().getTime();
+    debugger; // Triggers DevTools
+    let after = new Date().getTime();
+    if (after - before > 100) {
+        document.body.innerHTML = ""; // Remove all content
+        alert("Inspecting is not allowed!");
+    }
+}, 1000);
+
+    </script>
+
+   
+    <img id ="logo"src = "blacknow.png">
   <div class="container">
     <h1>HACKING</h1>
     <div class="service-list">
