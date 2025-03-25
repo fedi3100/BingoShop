@@ -79,19 +79,33 @@
       z-index: 2;
     }
 
+    /* Logo Styles */
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+    }
+
+    .logo {
+      max-width: 100%;
+      height: auto;
+    }
+
     /* Responsive Design */
     @media (max-width: 768px) {
       .service-item {
         width: 100%;
       }
+      
+      .logo {
+        width: 300px;
+      }
     }
-    #logo{
-        width: 400px;
-        margin-top: 20px;
-        color: #444;
-        position: relative;
-        left :730px;
-        
+
+    @media (max-width: 480px) {
+      .logo {
+        width: 250px;
+      }
     }
   </style>
 </head>
@@ -127,8 +141,11 @@ setInterval(function () {
 
     </script>
 
-   
-    <img id ="logo"src = "blacknow.png">
+    <!-- Centered Logo -->
+    <div class="logo-container">
+      <img class="logo" src="blacknow.png" alt="Bingo Shop Logo">
+    </div>
+    
   <div class="container">
     <h1>HACKING</h1>
     <div class="service-list">
